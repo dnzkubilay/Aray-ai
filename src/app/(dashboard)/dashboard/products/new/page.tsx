@@ -134,17 +134,63 @@ export default function NewProductPage() {
                     </div>
                 </div>
 
-                {/* File Upload (Dummy for now) */}
-                <div className="space-y-4 rounded-xl border bg-card p-6">
-                    <h3 className="font-semibold">Files</h3>
-                    <div className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-muted/50 transition-colors cursor-pointer">
-                        <Upload className="w-8 h-8 text-muted-foreground mb-4" />
-                        <p className="text-sm font-medium">Click to upload product files</p>
-                        <p className="text-xs text-muted-foreground mt-1">MP4, ZIP, PDF up to 1GB</p>
+                {/* Aray-Scan™ AI Analyzer */}
+                <div className="space-y-4 rounded-xl border border-indigo-500/20 bg-indigo-50/50 dark:bg-indigo-950/10 p-6">
+                    <div className="flex items-center justify-between">
+                        <h3 className="font-semibold flex items-center gap-2">
+                            <span className="text-indigo-600 dark:text-indigo-400">✨ Aray-Scan™</span>
+                            Analyzer
+                        </h3>
+                        {uploading && <span className="text-xs text-indigo-600 animate-pulse">Analyzing content...</span>}
                     </div>
-                    <p className="text-xs text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded">
-                        ⚠️ File upload requires Supabase Storage setup. Currently disabled for MVP demo.
-                    </p>
+
+                    <div
+                        className="border-2 border-dashed border-indigo-200 dark:border-indigo-900 rounded-lg p-8 flex flex-col items-center justify-center text-center hover:bg-indigo-50/50 dark:hover:bg-indigo-900/10 transition-colors cursor-pointer relative overflow-hidden"
+                        onClick={() => document.getElementById('ai-upload')?.click()}
+                    >
+                        <input
+                            id="ai-upload"
+                            type="file"
+                            className="hidden"
+                            onChange={async (e) => {
+                                const file = e.target.files?.[0]
+                                if (!file) return
+
+                                setUploading(true)
+                                // Mock call to Aray-Scan API
+                                const formData = new FormData()
+                                formData.append('file', file)
+
+                                try {
+                                    const res = await fetch('/api/analyze', { method: 'POST', body: formData })
+                                    const data = await res.json()
+
+                                    if (data.success) {
+                                        setFormData(prev => ({
+                                            ...prev,
+                                            title: data.data.title,
+                                            description: data.data.description,
+                                            price: data.data.suggested_price.toString()
+                                        }))
+                                    }
+                                } catch (err) {
+                                    console.error(err)
+                                } finally {
+                                    setUploading(false)
+                                }
+                            }}
+                        />
+
+                        {uploading ? (
+                            <div className="absolute inset-0 flex items-center justify-center bg-white/80 dark:bg-black/80 backdrop-blur-sm z-10">
+                                <Loader2 className="w-8 h-8 text-indigo-600 animate-spin" />
+                            </div>
+                        ) : null}
+
+                        <Upload className="w-8 h-8 text-indigo-500 mb-4" />
+                        <p className="text-sm font-medium">Drop a file to auto-generate details</p>
+                        <p className="text-xs text-muted-foreground mt-1">AI will detect metadata, price, and descriptions</p>
+                    </div>
                 </div>
 
                 <div className="flex justify-end gap-4">
