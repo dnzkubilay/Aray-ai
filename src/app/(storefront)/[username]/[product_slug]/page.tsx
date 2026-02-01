@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { Check, Shield, Zap } from "lucide-react"
+import { createCheckoutSession } from "@/app/actions/stripe"
 
 export default async function ProductDetailPage({ params }: { params: { username: string, product_slug: string } }) {
     const supabase = createClient()
@@ -57,9 +58,14 @@ export default async function ProductDetailPage({ params }: { params: { username
 
                         <div className="border-t border-b py-6 text-2xl font-bold flex items-center justify-between">
                             ${(product.price_amount / 100).toFixed(2)}
-                            <button className="bg-indigo-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20">
-                                Buy Now
-                            </button>
+                            <form action={async () => {
+                                "use server"
+                                await createCheckoutSession(product.id)
+                            }}>
+                                <button type="submit" className="bg-indigo-600 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20">
+                                    Buy Now
+                                </button>
+                            </form>
                         </div>
 
                         <div className="prose dark:prose-invert max-w-none text-muted-foreground">
