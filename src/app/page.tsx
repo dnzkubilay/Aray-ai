@@ -1,6 +1,7 @@
 import { Spotlight } from "@/components/ui/spotlight"
 import Link from "next/link"
 import { ArrowRight, Code, Database, Globe, LineChart, Lock, Zap } from "lucide-react"
+import { Footer } from "@/components/Footer"
 
 export default function LandingPage() {
   return (
@@ -107,6 +108,7 @@ export default function LandingPage() {
         </div>
       </div>
 
+      <Footer />
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import { RevenueChart } from "@/components/dashboard/RevenueChart"
 
 export default async function DashboardPage() {
     const supabase = await createClient()
@@ -53,8 +54,8 @@ export default async function DashboardPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <div className="col-span-4 rounded-xl border bg-card p-6 shadow-sm">
                     <h3 className="font-semibold mb-4">Revenue Overview</h3>
-                    <div className="h-[200px] flex items-center justify-center text-muted-foreground bg-muted/20 rounded-lg border border-dashed">
-                        Chart Placeholder (TimescaleDB Integration)
+                    <div className="h-[350px] w-full text-muted-foreground bg-[#0a0a0a] rounded-lg border border-zinc-900 pt-4">
+                        <RevenueChart />
                     </div>
                 </div>
                 <div className="col-span-3 rounded-xl border bg-card p-6 shadow-sm">
