@@ -1,114 +1,189 @@
-import { Spotlight } from "@/components/ui/spotlight"
+"use client"
+
+import { motion } from "framer-motion"
 import Link from "next/link"
-import { ArrowRight, Code, Database, Globe, LineChart, Lock, Zap } from "lucide-react"
-import { Footer } from "@/components/Footer"
+import { ArrowRight, Sparkles, Zap, Globe, Shield } from "lucide-react"
 
-export default function LandingPage() {
+export default function Home() {
   return (
-    <div className="min-h-screen bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
+    <div className="flex min-h-screen flex-col bg-black text-white selection:bg-indigo-500/30">
 
-      {/* Navbar Placeholder */}
-      <nav className="absolute top-0 inset-x-0 z-50 p-6 flex justify-between items-center container mx-auto">
-        <div className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">A</div>
-          ARAY
-        </div>
-        <div className="flex items-center gap-4">
-          <Link href="/login" className="text-sm text-zinc-400 hover:text-white transition-colors">Log in</Link>
-          <Link href="/register" className="text-sm bg-white text-black px-4 py-2 rounded-full font-medium hover:bg-zinc-200 transition-colors">Start Free</Link>
-        </div>
-      </nav>
-
-      {/* Hero Section with Spotlight */}
-      <div className="h-[40rem] w-full rounded-md flex md:items-center md:justify-center bg-black/[0.96] antialiased bg-grid-white/[0.02] relative overflow-hidden">
-        <Spotlight
-          className="-top-40 left-0 md:left-60 md:-top-20"
-          fill="white"
-        />
-        <div className="p-4 max-w-7xl  mx-auto relative z-10  w-full pt-20 md:pt-0">
-          <h1 className="text-4xl md:text-7xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400 bg-opacity-50">
-            Pure Intelligence. <br />
-            Seamless Commerce.
-          </h1>
-          <p className="mt-4 font-normal text-base text-neutral-300 max-w-lg text-center mx-auto">
-            The autonomous platform for digital creators. ARAY handles content analysis, pricing, and sales—so you can focus on creating.
-          </p>
-
-          <div className="mt-8 flex justify-center gap-4">
-            <Link href="/register" className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-indigo-600 px-8 font-medium text-neutral-200 transition-all duration-300 hover:bg-indigo-700 hover:scale-105 hover:w-56 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-              <span className="mr-2">Get Started</span>
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-              <div className="absolute inset-0 -z-10 bg-gradient-to-r from-indigo-600 to-purple-600 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      {/* Navigation */}
+      <header className="fixed top-0 z-50 w-full border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div className="container mx-auto flex h-16 items-center justify-between px-6">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center">
+              <Zap className="h-5 w-5 text-white" fill="currentColor" />
+            </div>
+            <span className="text-xl font-bold tracking-tight">ARAY AI</span>
+          </div>
+          <nav className="hidden md:flex gap-8 text-sm font-medium text-white/70">
+            <Link href="#features" className="hover:text-white transition-colors">Features</Link>
+            <Link href="#pricing" className="hover:text-white transition-colors">Pricing</Link>
+            <Link href="#about" className="hover:text-white transition-colors">About</Link>
+          </nav>
+          <div className="flex gap-4">
+            <Link href="/auth/login" className="text-sm font-medium text-white/70 hover:text-white flex items-center h-9 px-4">
+              Log in
+            </Link>
+            <Link
+              href="/auth/register"
+              className="group relative inline-flex h-9 items-center justify-center overflow-hidden rounded-full bg-indigo-600 px-6 font-medium text-white transition-all hover:bg-indigo-700"
+            >
+              <span className="relative flex items-center gap-2">
+                Get Started
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </span>
             </Link>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Features Grid (Bento Style) */}
-      <div className="py-20 relative bg-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500">
-              Built for the Future of Commerce
-            </h2>
-            <p className="text-zinc-500 mt-2">Everything you need to sell digital assets, powered by AI.</p>
+      <main className="flex-1 pt-32 pb-16">
+
+        {/* Hero Section */}
+        <section className="relative container mx-auto px-6 flex flex-col items-center text-center">
+
+          {/* Background Glow */}
+          <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none" />
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-indigo-300 backdrop-blur-md mb-8"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Powering the next generation of commerce</span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="max-w-4xl text-5xl md:text-7xl font-bold tracking-tight bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent mb-6"
+          >
+            Universal Autonomous <br /> Commerce Platform
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="max-w-2xl text-lg text-white/60 mb-10 leading-relaxed"
+          >
+            Sell digital products globally without friction. ARAY AI handles payments, taxes, files, and licensing automatically. Pure intelligence, seamless commerce.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="flex flex-col sm:flex-row gap-4 w-full justify-center"
+          >
+            <Link
+              href="/dashboard"
+              className="h-12 px-8 rounded-full bg-white text-black font-semibold flex items-center justify-center hover:bg-zinc-200 transition-colors"
+            >
+              Start Selling for Free
+            </Link>
+            <Link
+              href="/contact"
+              className="h-12 px-8 rounded-full border border-white/20 bg-white/5 text-white font-semibold flex items-center justify-center hover:bg-white/10 transition-colors backdrop-blur-md"
+            >
+              Talk to Sales
+            </Link>
+          </motion.div>
+
+          {/* Hero Image / Dashboard Preview */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mt-20 w-full max-w-5xl rounded-xl border border-white/10 bg-black/50 shadow-2xl overflow-hidden relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+
+            {/* Simple Dashboard Mockup */}
+            <div className="aspect-[16/9] relative bg-zinc-900/50 p-4 flex flex-col gap-4">
+              {/* Mock Header */}
+              <div className="h-12 w-full border-b border-white/5 flex items-center px-4 justify-between">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50" />
+                </div>
+                <div className="h-6 w-32 bg-white/5 rounded-md" />
+              </div>
+              {/* Mock Content */}
+              <div className="flex-1 flex gap-4">
+                <div className="w-48 bg-white/5 rounded-lg border border-white/5 h-full" />
+                <div className="flex-1 grid grid-cols-2 lg:grid-cols-3 gap-4">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="rounded-lg bg-white/5 border border-white/5 p-4 flex flex-col gap-2">
+                      <div className="h-32 w-full bg-white/5 rounded" />
+                      <div className="h-4 w-2/3 bg-white/10 rounded" />
+                      <div className="h-3 w-1/3 bg-white/5 rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </section>
+
+        {/* Features Grid */}
+        <section id="features" className="container mx-auto px-6 py-24">
+          <div className="grid md:grid-cols-3 gap-8">
+            <FeatureCard
+              icon={<Globe className="w-6 h-6 text-indigo-400" />}
+              title="Global Payments"
+              description="Accept payments in 135+ currencies with automated tax compliance worldwide."
+            />
+            <FeatureCard
+              icon={<Shield className="w-6 h-6 text-indigo-400" />}
+              title="Merchant of Record"
+              description="We handle the liabilities, chargebacks, and tax filing so you can focus on building."
+            />
+            <FeatureCard
+              icon={<Zap className="w-6 h-6 text-indigo-400" />}
+              title="Instant Payouts"
+              description="Get paid faster with automated payouts directly to your bank account."
+            />
           </div>
+        </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Feature 1 */}
-            <div className="md:col-span-2 relative group overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 hover:border-zinc-700 transition-colors">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center mb-4 text-indigo-400">
-                  <Code className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">Aray-Scan™ Technology</h3>
-                <p className="text-zinc-400">
-                  Drag and drop any file. Our AI analyzes it, generates SEO-ready descriptions, detects technical specs, and even suggests the perfect price point based on market data.
-                </p>
-              </div>
-            </div>
+      </main>
 
-            {/* Feature 2 */}
-            <div className="relative group overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 hover:border-zinc-700 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mb-4 text-purple-400">
-                <Zap className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Instant Storefront</h3>
-              <p className="text-zinc-400 text-sm">
-                Get a beautiful, high-converting profile page in seconds. No coding required.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="relative group overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 hover:border-zinc-700 transition-colors">
-              <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center mb-4 text-pink-400">
-                <Globe className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-semibold text-white mb-2">Global Payments</h3>
-              <p className="text-zinc-400 text-sm">
-                Accept payments from anywhere with Stripe. Automated payouts to your bank account.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="md:col-span-2 relative group overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 hover:border-zinc-700 transition-colors">
-              <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4 text-cyan-400">
-                  <LineChart className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">Real-time Analytics</h3>
-                <p className="text-zinc-400">
-                  Track views, sales, and conversion rates in real-time. Understand your audience with privacy-focused insights that help you grow.
-                </p>
-              </div>
-            </div>
+      <footer className="border-t border-white/10 py-12 bg-black">
+        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+          <span className="text-white/40 text-sm">© 2026 ARAY AI Inc. All rights reserved.</span>
+          <div className="flex gap-6">
+            <Link href="#" className="text-white/40 hover:text-white transition-colors text-sm">Privacy</Link>
+            <Link href="#" className="text-white/40 hover:text-white transition-colors text-sm">Terms</Link>
+            <Link href="#" className="text-white/40 hover:text-white transition-colors text-sm">Twitter</Link>
           </div>
         </div>
-      </div>
-
-      <Footer />
+      </footer>
     </div>
+  )
+}
+
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-colors"
+    >
+      <div className="mb-4 h-12 w-12 rounded-lg bg-black/50 border border-white/10 flex items-center justify-center">
+        {icon}
+      </div>
+      <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+      <p className="text-white/60 leading-relaxed">
+        {description}
+      </p>
+    </motion.div>
   )
 }
