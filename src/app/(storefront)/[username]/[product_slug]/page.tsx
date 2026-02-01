@@ -6,7 +6,7 @@ import { Check, Shield, Zap } from "lucide-react"
 import { createCheckoutSession } from "@/app/actions/stripe"
 
 export default async function ProductDetailPage({ params }: { params: { username: string, product_slug: string } }) {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { username, product_slug } = await params
 
     // Fetch product and verify creator

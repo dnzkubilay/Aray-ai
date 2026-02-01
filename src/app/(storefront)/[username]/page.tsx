@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 export default async function StorefrontPage({ params }: { params: { username: string } }) {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { username } = await params
 
     // Fetch creator profile

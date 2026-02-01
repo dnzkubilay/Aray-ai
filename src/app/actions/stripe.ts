@@ -4,12 +4,17 @@ import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import Stripe from "stripe"
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: "2025-01-27.acacia",
-})
-
 export async function createCheckoutSession(productId: string) {
-    const supabase = createClient()
+    const supabase = await createClient()
+
+    if (!process.env.STRIPE_SECRET_KEY) {
+        console.error("Missing STRIPE_SECRET_KEY")
+        throw new Error("Stripe is not configured")
+    }
+
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+        apiVersion: "2026-01-28.clover",
+    })
 
     // 1. Get Product Details
     const { data: product } = await supabase
