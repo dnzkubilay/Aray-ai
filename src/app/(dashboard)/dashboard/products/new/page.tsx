@@ -16,7 +16,8 @@ export default function NewProductPage() {
         title: "",
         description: "",
         price: "",
-        slug: ""
+        slug: "",
+        type: "digital_asset" // default
     })
 
     // Basic slug generator
@@ -42,7 +43,7 @@ export default function NewProductPage() {
                     creator_id: user.id,
                     title: formData.title,
                     slug: formData.slug + '-' + Math.random().toString(36).substring(7), // Ensure uniqueness
-                    type: 'digital_asset', // Default for MVP
+                    type: formData.type, // 'digital_asset' or 'software'
                     description: formData.description,
                     price_amount: priceAmount,
                     status: 'published' // Auto-publish for MVP
@@ -110,6 +111,40 @@ export default function NewProductPage() {
                             value={formData.description}
                             onChange={e => setFormData({ ...formData, description: e.target.value })}
                         />
+                    </div>
+                </div>
+
+                {/* Product Type */}
+                <div className="space-y-4 rounded-xl border bg-card p-6">
+                    <h3 className="font-semibold">Product Type</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                        <label className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.type === 'digital_asset' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-muted hover:bg-muted/50'}`}>
+                            <input
+                                type="radio"
+                                name="product_type"
+                                value="digital_asset"
+                                checked={formData.type === 'digital_asset'}
+                                onChange={() => setFormData({ ...formData, type: 'digital_asset' })}
+                                className="hidden"
+                            />
+                            <span className="text-2xl mb-2">📦</span>
+                            <span className="font-medium">Digital Asset</span>
+                            <span className="text-xs text-muted-foreground mt-1">File download</span>
+                        </label>
+
+                        <label className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 cursor-pointer transition-all ${formData.type === 'software' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-muted hover:bg-muted/50'}`}>
+                            <input
+                                type="radio"
+                                name="product_type"
+                                value="software"
+                                checked={formData.type === 'software'}
+                                onChange={() => setFormData({ ...formData, type: 'software' })}
+                                className="hidden"
+                            />
+                            <span className="text-2xl mb-2">🔑</span>
+                            <span className="font-medium">Software License</span>
+                            <span className="text-xs text-muted-foreground mt-1">Generates License Keys</span>
+                        </label>
                     </div>
                 </div>
 

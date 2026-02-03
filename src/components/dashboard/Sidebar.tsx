@@ -9,7 +9,8 @@ import {
     Settings,
     CreditCard,
     LogOut,
-    Package
+    Package,
+    Key
 } from "lucide-react"
 
 const sidebarItems = [
@@ -37,6 +38,11 @@ const sidebarItems = [
         title: "Settings",
         href: "/dashboard/settings",
         icon: Settings,
+    },
+    {
+        title: "Licenses",
+        href: "/dashboard/licenses",
+        icon: Key,
     },
 ]
 
