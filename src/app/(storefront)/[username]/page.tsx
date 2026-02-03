@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 
 export default async function StorefrontPage({ params }: { params: { username: string } }) {
-    const supabase = createClient()
+    const supabase = await createClient()
     const { username } = await params
 
     // Fetch creator profile
@@ -25,57 +25,94 @@ export default async function StorefrontPage({ params }: { params: { username: s
         .order('created_at', { ascending: false })
 
     return (
-        <div className="min-h-screen bg-zinc-50 dark:bg-black">
-            {/* Creator Header */}
-            <div className="border-b bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800">
-                <div className="container mx-auto px-4 py-12 flex flex-col items-center text-center">
-                    <div className="w-24 h-24 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 mb-4 overflow-hidden relative">
-                        {creator.avatar_url && <Image src={creator.avatar_url} alt={creator.display_name} fill className="object-cover" />}
-                    </div>
-                    <h1 className="text-3xl font-bold tracking-tight mb-2">{creator.display_name || creator.username}</h1>
-                    <p className="text-muted-foreground max-w-lg mb-6">{creator.bio || "Digital creator."}</p>
-                    {/* Social Links could go here */}
-                </div>
+        <div className="min-h-screen bg-[#0a0a0a] text-zinc-100 selection:bg-indigo-500/30">
+            {/* Background Effects */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[120px]" />
+                <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[120px]" />
             </div>
 
-            {/* Product Grid */}
-            <div className="container mx-auto px-4 py-12">
-                <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <main className="relative z-10 container max-w-2xl mx-auto px-4 py-16 md:py-24">
+                {/* Profile Header */}
+                <div className="flex flex-col items-center text-center space-y-6 mb-12">
+                    <div className="relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full opacity-75 blur group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                        <div className="relative w-28 h-28 rounded-full bg-zinc-900 border-4 border-zinc-950 overflow-hidden">
+                            {creator.avatar_url ? (
+                                <Image src={creator.avatar_url} alt={creator.display_name} fill className="object-cover" />
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-zinc-800 text-3xl font-bold text-zinc-500">
+                                    {creator.display_name?.[0]?.toUpperCase() || creator.username[0].toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="space-y-2">
+                        <h1 className="text-3xl font-bold tracking-tight text-white">{creator.display_name || creator.username}</h1>
+                        <p className="text-zinc-400 max-w-md mx-auto leading-relaxed">{creator.bio || "Digital creator."}</p>
+                    </div>
+
+                    <div className="flex gap-3">
+                        {/* Placeholder Socials */}
+                        {['twitter', 'github', 'instagram'].map(platform => (
+                            <button key={platform} className="p-2 rounded-full bg-zinc-900/50 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800 transition-all text-zinc-400 hover:text-white">
+                                <span className="sr-only">{platform}</span>
+                                <div className="w-5 h-5 bg-current opacity-50" />
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Product Stack (Linktree Style) */}
+                <div className="space-y-4">
                     {products?.map(product => (
-                        <Link href={`/${username}/${product.slug}`} key={product.id} className="group block">
-                            <div className="rounded-xl border bg-card overflow-hidden transition-all hover:shadow-lg hover:-translate-y-1">
-                                <div className="aspect-video bg-muted relative overflow-hidden">
+                        <Link href={`/${username}/${product.slug}`} key={product.id} className="block group">
+                            <div className="relative overflow-hidden rounded-2xl bg-zinc-900/50 border border-zinc-800 hover:border-indigo-500/50 hover:bg-zinc-900/80 transition-all duration-300 p-2 flex gap-4 hover:scale-[1.01] hover:shadow-xl hover:shadow-indigo-500/10">
+                                <div className="relative w-24 h-24 sm:w-32 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-zinc-800">
                                     {product.cover_image_url ? (
-                                        <Image src={product.cover_image_url} alt={product.title} fill className="object-cover transition-transform group-hover:scale-105" />
+                                        <Image src={product.cover_image_url} alt={product.title} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
                                     ) : (
-                                        <div className="w-full h-full bg-gradient-to-br from-indigo-500/5 to-purple-500/5 flex items-center justify-center">
-                                            <span className="text-4xl">📦</span>
-                                        </div>
+                                        <div className="w-full h-full flex items-center justify-center text-2xl">📦</div>
                                     )}
                                 </div>
-                                <div className="p-5">
-                                    <h3 className="font-semibold text-lg mb-2">{product.title}</h3>
-                                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">{product.short_description || "No description."}</p>
-                                    <div className="flex items-center justify-between">
-                                        <span className="font-bold text-indigo-600 dark:text-indigo-400">
+
+                                <div className="flex flex-col justify-center py-2 pr-4 flex-grow">
+                                    <div className="flex items-start justify-between gap-4 mb-2">
+                                        <h3 className="font-semibold text-lg text-zinc-100 group-hover:text-indigo-400 transition-colors line-clamp-1">{product.title}</h3>
+                                        <span className="shrink-0 px-2.5 py-1 rounded-full bg-white/10 text-xs font-medium text-white border border-white/10">
                                             ${(product.price_amount / 100).toFixed(2)}
                                         </span>
-                                        <span className="text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
-                                            {product.type.replace('_', ' ')}
-                                        </span>
                                     </div>
+                                    <p className="text-sm text-zinc-400 line-clamp-2 mb-3">{product.short_description || "Instant digital download."}</p>
+                                    <div className="flex items-center gap-2 text-xs text-zinc-500">
+                                        <span className="capitalize">{product.type.replace('_', ' ')}</span>
+                                        <span>•</span>
+                                        <span>Instant Delivery</span>
+                                    </div>
+                                </div>
+
+                                <div className="absolute right-4 bottom-4 opacity-0 group-hover:opacity-100 transition-opacity -translate-x-2 group-hover:translate-x-0 duration-300 text-indigo-400">
+                                    →
                                 </div>
                             </div>
                         </Link>
                     ))}
 
                     {(!products || products.length === 0) && (
-                        <div className="col-span-full py-12 text-center text-muted-foreground">
-                            No products available yet.
+                        <div className="text-center py-12 border border-dashed border-zinc-800 rounded-2xl bg-zinc-900/30">
+                            <p className="text-zinc-500">No products available yet.</p>
                         </div>
                     )}
                 </div>
-            </div>
+
+                <footer className="mt-20 text-center">
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs text-zinc-500">
+                        <span>Powered by</span>
+                        <span className="font-bold text-zinc-300">ARAY</span>
+                    </div>
+                </footer>
+            </main>
         </div>
     )
 }
